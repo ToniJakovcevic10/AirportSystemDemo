@@ -1,0 +1,44 @@
+﻿@inject FlightService _flightService;
+
+@if(Flights==null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="PassengerFields">
+        <label for="PassengerName">Passenger Number</label>
+        <InputText id="PassengerName" @bind-Value="@Passenger.Name" class="form-control"></InputText>
+    
+        <label for="PassengerSurname">Passenger Surname</label>
+        <InputText id="PassengerSurname" @bind-Value="@Passenger.Surname" class="form-control"></InputText>
+        
+        <label for="PassengerGender">Passenger Gender</label>
+        <InputSelect id="PassengerGender" @bind-Value="@Passenger.Gender" class="form-control">
+            <option value="">Select...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Unspecified">Unspecified</option>
+        </InputSelect>
+    
+        @*<label for="Flights">Flight</label>
+        <InputSelect id="Flights" @bind-Value="@Passenger.FlightId" class="form-control">
+            <option value="">Select...</option>
+            foreach(var flight in Flights)
+            {
+                <option value=""></option>
+            }
+        </InputSelect>*@
+    </div>
+}
+@code {
+    [Parameter]
+    public Passenger Passenger{ get; set; }
+
+    public List<Flight> Flights{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Flights = await _flightService.GetFlights(); 
+    }
+}

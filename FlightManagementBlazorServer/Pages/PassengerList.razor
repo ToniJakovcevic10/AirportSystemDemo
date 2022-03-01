@@ -1,0 +1,80 @@
+﻿@page "/PassengerList"
+@inject PassengerService _passengerService;
+@inject NavigationManager _navigationManager;
+
+<h3>PassengerList</h3>
+<button type="button" class="btn btn-success" @onclick="OpenAddPassenger">
+    <span class="oi oi-plus"></span>
+    Add Passenger
+</button>
+
+@if(Passengers==null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var passenger in Passengers)
+            {
+                <tr>
+                    <td>@passenger.Name</td>
+                    <td>@passenger.Surname</td>
+                    <td>@passenger.Gender</td>
+                    <td>
+                        <a href="/EditPassenger/@passenger.Id" class="btn btn-primary">
+                            <span class="oi oi-pencil"></span>    
+                        </a>
+
+                         <button type="button" class="btn btn-danger" @onclick="() => DeletePassenger(passenger.Id)">
+                            <span class="oi oi-delete"></span>
+                        </button>
+
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<ConfirmationDialog @ref="DeleteConfirmationDialog" ConfirmationChanged="@OnDeleteConfirmationSelected" Question="Delete Passenger?"></ConfirmationDialog>
+
+@code {
+    private List<Passenger> Passengers{get;set;}
+    public ConfirmationDialog DeleteConfirmationDialog{ get; set; }
+    public int SelectedPassengerId{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Passengers = await _passengerService.GetPassengers();
+    }
+
+    private void OpenAddPassenger()
+    {
+        _navigationManager.NavigateTo("/AddPassenger");
+    }
+
+    private async Task DeletePassenger(int passengerId)
+    {
+        SelectedPassengerId = passengerId;
+        DeleteConfirmationDialog.Show();
+    }
+
+    private async Task OnDeleteConfirmationSelected(bool isDeleteConfirmed)
+    {
+        if(isDeleteConfirmed)
+        {
+            await _passengerService.DeletePassenger(SelectedPassengerId);
+            Passengers = await _passengerService.GetPassengers();
+        }
+    }
+}
