@@ -1,6 +1,7 @@
 ﻿@page "/archivedFlightList"
 @inject NavigationManager _navigationManager;
 @inject FlightService _flightService;
+@inject AppState _appState;
 <h3>Archived Flights</h3>
 
 @if(Flights == null)
@@ -41,4 +42,5 @@ else
     {
         Flights = await _flightService.GetArchivedFlights();
     }
+    
 }

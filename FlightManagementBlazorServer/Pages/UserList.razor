@@ -1,0 +1,88 @@
+﻿@page "/UserList"
+@inject AppState _appState;
+@*@using DomainModel.Models
+@using FlightManagementBlazorServer.Pages;
+@using FlightManagementBlazorServer.Services;*@
+@inject UserService _userService;
+@inject NavigationManager _navigationManager;
+
+<h3>UserList</h3>
+
+<button type="button" class="btn btn-success" @onclick="OpenAddUserPage">
+    <span class="oi oi-plus"></span>
+    Add User
+</button>
+
+@if(Users == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>UserName</th>
+                <th>Password</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var user in Users)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Password</td>
+                    <td>@user.RoleId</td>
+                    @if (_appState.Role == "Admin")
+                    {
+                        <td>
+                                <a href="/EditUser/@user.Id" class="btn btn-primary">
+                                <span class="oi oi-pencil"></span>    
+                            </a>
+                            
+                            <button type="button" class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }  
+        </tbody>
+    </table>
+}
+
+<ConfirmationDialog @ref="DeleteConfirmationDialog" ConfirmationChanged="@OnDeleteConfirmationSelected" Question="Delete User?"></ConfirmationDialog>
+
+@code {
+    private List<User> Users;
+    public int UserIdForDelete{ get; set; }
+    public ConfirmationDialog DeleteConfirmationDialog{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await _userService.GetUsers();
+        _appState.OnChange += StateHasChanged;
+    }
+
+    private async Task DeleteUser(int userId)
+    {
+        UserIdForDelete = userId;
+        DeleteConfirmationDialog.Show();
+    }
+
+    private void OpenAddUserPage()
+    {
+        _navigationManager.NavigateTo("/AddUser");
+    }
+
+    private async Task OnDeleteConfirmationSelected(bool isDeleteConfirmed)
+    {
+        if(isDeleteConfirmed)
+        {
+            await _userService.DeleteUser(UserIdForDelete);
+            Users = await _userService.GetUsers();
+        }
+    }
+
+}

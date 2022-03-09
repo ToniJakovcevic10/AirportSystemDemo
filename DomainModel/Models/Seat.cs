@@ -8,8 +8,11 @@ namespace DomainModel.Models
 {
     public class Seat
     {
-        public int? PassengerId { get; set; }
-        public int? FlightId { get; set; }
+        public int Id { get; set; }
+        public int PassengerId { get; set; }
+        public int FlightId { get; set; }
+
+        public string? SeatNumber { get; set; }
 
         public Passenger Passenger { get; set; }
 

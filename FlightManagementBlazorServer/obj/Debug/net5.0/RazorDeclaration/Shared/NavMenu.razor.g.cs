@@ -91,7 +91,7 @@ using DomainModel.Models;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\_Imports.razor"
-using Services;
+using FlightManagementBlazorServer.Services;
 
 #line default
 #line hidden
@@ -103,7 +103,14 @@ using ValidationModels;
 #line default
 #line hidden
 #nullable disable
-    public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 14 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\_Imports.razor"
+using FlightManagementBlazorServer.Pages;
+
+#line default
+#line hidden
+#nullable disable
+    public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -111,20 +118,33 @@ using ValidationModels;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 33 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Shared\NavMenu.razor"
+#line 62 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
-
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
+    protected override void OnInitialized()
+    {
+        _appState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        _appState.OnChange -= StateHasChanged;
+    }
+    public void LogOut()
+    {
+        _appState.Role = "costumer";
+        Dispose();
+    }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private AppState _appState { get; set; }
     }
 }
 #pragma warning restore 1591

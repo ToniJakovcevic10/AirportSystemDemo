@@ -1,0 +1,90 @@
+﻿@page "/AddPassengersToSeat/{FlightId}"
+@inject SeatService _seatService;
+@inject NavigationManager _navigationManager;
+@inject PassengerService _passengerService;
+@inject FlightService _flightService;
+@inject AppState _appState;
+@if(Passengers==null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>Add Passengers in @FlightId Flight</h3>
+    <a href="/AddPassenger" class="btn-primary justify-content-center">
+        Create new Passengers
+    </a>
+
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th> Name</th>
+                <th> Surname</th>
+                <th> Gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var passenger in Passengers)
+            {
+                
+                <tr>
+                    <td>@passenger.Name</td>
+                    <td>@passenger.Surname</td>
+                    <td>@passenger.Gender</td>
+                    <td>
+                        <button class="btn btn-outline-primary" @onclick="()=> AddPassengerToFlight(passenger)">
+                            Add
+                        </button>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <button type="button" class="btn btn-primary" @onclick="Close">
+                    Close
+                </button>
+            </tr>
+        </tbody>
+    </table>
+}
+<ConfirmationDialog @ref="AddPassengerConfirmationDialog" ConfirmationChanged="@OnAddPassengerConfirmationSelected" Question="Add passenger to flight?"></ConfirmationDialog>
+
+@code {
+    [Parameter]
+    public string FlightId { get; set; }
+    private Seat seatToAdd { get; set; }
+    private int passIdToAdd { get; set; }
+    private List<Seat> Seats{ get; set; }
+    private List<Passenger> Passengers = new List<Passenger>();
+    public ConfirmationDialog AddPassengerConfirmationDialog{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Passengers = await _passengerService.GetPassengers();
+        Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+
+    private async Task Close()
+    {
+        await _seatService.GetSeats(int.Parse(FlightId));
+        _navigationManager.NavigateTo($"/Seat/{FlightId}");
+    }
+
+    private async Task OnAddPassengerConfirmationSelected(bool isAddingConfirmed)
+    {
+        if(isAddingConfirmed)
+        {
+            seatToAdd = new Seat();
+            seatToAdd.PassengerId = passIdToAdd;
+            seatToAdd.FlightId =int.Parse(FlightId);
+            await _seatService.AddSeatAsync(seatToAdd);
+            Seats = await _seatService.GetSeats(int.Parse(FlightId));
+            Passengers.Remove(seatToAdd.Passenger);
+        }
+    }
+
+    private async Task AddPassengerToFlight(Passenger passenger)
+    {
+        passIdToAdd = passenger.Id;
+        AddPassengerConfirmationDialog.Show();
+    }
+}

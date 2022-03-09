@@ -1,7 +1,7 @@
 ﻿@page "/"
 @inject FlightService _flightService;
 @inject NavigationManager _navigationManager;
-
+@inject AppState _appState;
 
 <h3>Flights</h3>
 <button type="button" class="btn btn-success" @onclick="OpenAddFlightPage">
@@ -34,25 +34,33 @@ else
                     <td>@flight.Carrier?.Name</td>
                     <td>@flight.AirportTo</td>
                     <td>
-                        <a href="/EditFlight/@flight.Id" class="btn btn-primary">
-                            <span class="oi oi-pencil"></span>    
-                        </a>
-                        
-                        <button type="button" class="btn btn-danger" @onclick="() => DeleteFlight(flight.Id)">
-                            <span class="oi oi-delete"></span>
-                        </button>
-                        
-                        <button type="button" class="btn btn-secondary" @onclick="() => ArchiveFlight(flight.Id)">
-                            <span class="oi oi-transfer"></span>
-                        </button>
-
-                        <a href="/AddPassangerToFlight/@flight.Id" class="btn btn-primary">
-                            Add passengers
-                        </a>
-                    </td>
+                        @if(_appState.Role=="Admin")
+                        {
+                            
+                            <a href="/EditFlight/@flight.Id" class="btn btn-primary">
+                                <span class="oi oi-pencil"></span>    
+                            </a>
+                            
+                            <button type="button" class="btn btn-danger" @onclick="() => DeleteFlight(flight.Id)">
+                                <span class="oi oi-delete"></span>
+                            </button>
+                            
+                            <button type="button" class="btn btn-secondary" @onclick="() => ArchiveFlight(flight.Id)">
+                                <span class="oi oi-transfer"></span>
+                            </button>
+                        }
+                    </td> 
+                        @if(_appState.Role=="Admin" || _appState.Role=="CheckIn")
+                        {
+                            <td>
+                                <a href="/Seat/@flight.Id" class="btn btn-link">
+                                   <span class="oi oi-basket"></span> Seat list
+                                </a>
+                            </td>
+                        }
+                   
                 </tr>
-            }
-            
+            }  
         </tbody>
     </table>
 

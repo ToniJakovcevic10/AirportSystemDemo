@@ -1,0 +1,32 @@
+﻿@inject FlightService _flightService;
+
+@if(Flights == null)
+{
+    <p>Loading...</p>
+
+}
+else
+{
+
+    <div class="seatFields">
+        <label for="SeatFlightId">FlightId</label>
+        
+        <label for="SeatPassengerId">Passenger Id</label>
+
+        <label for="SeatSeatNumber">Seat Number</label>
+        <InputText id="SeatNumber" @bind-Value="@Seat.SeatNumber" class="form-control"></InputText>
+    </div>    
+}
+
+
+@code {
+    [Parameter]
+    public Seat Seat { get; set; }
+
+    public List<Flight> Flights{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+       Flights = await _flightService.GetFlights(); 
+    }
+}

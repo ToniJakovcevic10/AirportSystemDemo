@@ -1,0 +1,51 @@
+﻿@page "/EditSeat/{FlightId}/{SeatId}"
+@using System.Text;
+@inject SeatService _seatService;
+@inject NavigationManager _navigationManager;
+<h3>EditSeat</h3>
+
+@if(Seat == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@Seat"  OnValidSubmit="@UpdateSeatAsync">
+        <SeatFields Seat="@Seat"></SeatFields>
+        <button type="submit" class="btn btn-success">
+            <span class="oi-pencil"></span>
+            Update Seat
+        </button>
+        <button type="button" class="btn btn-secondary" @onclick="Close">
+            <span class="oi oi-media-skip-backward"></span>
+            Close
+        </button>
+    </EditForm>
+}
+<NotificationDialog @ref="notificationDialog" Description="Seat is already taken. Please choose available seat."></NotificationDialog>
+@code {
+    [Parameter]
+    public string SeatId{ get; set; }
+    [Parameter]
+    public string FlightId{ get; set; }
+
+    public NotificationDialog notificationDialog{ get; set; }
+    public Seat Seat { get; set; }
+    public List<Seat> Seats{ get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Seat = await _seatService.GetSeatAsync(int.Parse(FlightId),int.Parse(SeatId));
+        Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+    private void Close()
+    {
+        _navigationManager.NavigateTo($"/Seat/{FlightId}");
+    }
+
+    private async Task UpdateSeatAsync()
+    {
+
+        await _seatService.UpdateSeat(Seat);
+        Close();
+    }
+}

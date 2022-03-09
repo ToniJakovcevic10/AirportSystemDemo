@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\AddPassengerToFlight.razor" />
+    <Content Remove="Pages\CheckInPassenger.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -13,15 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\AddPassengerToFlight.razor" />
+    <UpToDateCheckInput Remove="Pages\CheckInPassenger.razor" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\AddPassengerToFlight.razor" />
+    <_ContentIncludedByDefault Remove="Pages\CheckInPassenger.razor" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\AddPassengerToFlight.razor" />
+    <None Include="Pages\CheckInPassenger.razor" />
   </ItemGroup>
 
 </Project>

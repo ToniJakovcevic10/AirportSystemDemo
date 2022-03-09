@@ -1,6 +1,7 @@
 ﻿@page "/PassengerList"
 @inject PassengerService _passengerService;
 @inject NavigationManager _navigationManager;
+@inject AppState _appState;
 
 <h3>PassengerList</h3>
 <button type="button" class="btn btn-success" @onclick="OpenAddPassenger">
@@ -14,7 +15,7 @@
 }
 else
 {
-    <table>
+    <table class="table table-responsive">
         <thead>
             <tr>
                 <th>Name</th>
@@ -30,15 +31,16 @@ else
                     <td>@passenger.Surname</td>
                     <td>@passenger.Gender</td>
                     <td>
-                        <a href="/EditPassenger/@passenger.Id" class="btn btn-primary">
-                            <span class="oi oi-pencil"></span>    
-                        </a>
+                        @if(_appState.Role=="Admin")
+                        {
+                            <a href="/EditPassenger/@passenger.Id" class="btn btn-primary">
+                                <span class="oi oi-pencil"></span>    
+                            </a>
 
-                         <button type="button" class="btn btn-danger" @onclick="() => DeletePassenger(passenger.Id)">
-                            <span class="oi oi-delete"></span>
-                        </button>
-
-
+                             <button type="button" class="btn btn-danger" @onclick="() => DeletePassenger(passenger.Id)">
+                                <span class="oi oi-delete"></span>
+                            </button> 
+                        }
                     </td>
                 </tr>
             }

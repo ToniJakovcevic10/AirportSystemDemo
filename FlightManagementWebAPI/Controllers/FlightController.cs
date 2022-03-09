@@ -14,6 +14,7 @@ namespace FlightManagementWebAPI.Controllers
         {
             _flightRepository = flightRepository;
         }
+
         [HttpGet]
         public IActionResult GetFlights()
         {

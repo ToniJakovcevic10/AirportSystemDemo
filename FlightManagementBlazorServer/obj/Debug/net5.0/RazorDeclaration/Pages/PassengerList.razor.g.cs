@@ -91,7 +91,7 @@ using DomainModel.Models;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\_Imports.razor"
-using Services;
+using FlightManagementBlazorServer.Services;
 
 #line default
 #line hidden
@@ -99,6 +99,13 @@ using Services;
 #nullable restore
 #line 13 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\_Imports.razor"
 using ValidationModels;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\_Imports.razor"
+using FlightManagementBlazorServer.Pages;
 
 #line default
 #line hidden
@@ -112,7 +119,7 @@ using ValidationModels;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 51 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\PassengerList.razor"
+#line 53 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\PassengerList.razor"
        
     private List<Passenger> Passengers{get;set;}
     public ConfirmationDialog DeleteConfirmationDialog{ get; set; }
@@ -146,6 +153,7 @@ using ValidationModels;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private AppState _appState { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private PassengerService _passengerService { get; set; }
     }

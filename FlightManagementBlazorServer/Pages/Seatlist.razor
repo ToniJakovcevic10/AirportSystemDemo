@@ -1,0 +1,94 @@
+﻿@page "/Seat/{FlightId}"
+@inject SeatService _seatService;
+@inject AppState _appState;
+@inject NavigationManager _navigationManager;
+
+@if(Seats==null)
+{
+    <p>Loading...</p>
+}
+else
+{
+     <h3>Seat List in Flight @FlightId</h3>
+
+     <button type="button" class="btn btn-success" @onclick="OpenAddPassengersToList">
+        <span class="oi oi-plus"></span>
+            Add Passengers
+     </button>
+
+     <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>SeatId</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+       <tbody>
+            @foreach(var seat in Seats)
+            {
+                if(seat.FlightId==int.Parse(FlightId))
+                {
+                    <tr>
+                        <td>@seat.Id</td>
+                        <td>@seat.Passenger.Name</td>
+                        <td>@seat.Passenger.Surname</td>
+                        <td>@seat.Passenger.Gender</td>
+                        <td>
+                            @if(_appState.Role=="Admin")
+                            {
+                                <button type="button" class="btn btn-danger" @onclick="() => DeleteSeat(seat.Id)">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            }
+                            @if(_appState.Role=="Admin" || _appState.Role=="CheckIn")
+                            {
+                                <button type="button" class="btn btn-secondary" @onclick="() => CheckInPassenger(seat.Id)">
+                                    Check In Passenger
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+<NotificationDialog @ref="notificationDialog" Description="Passenger is already checked in!"></NotificationDialog>
+
+@code {
+    [Parameter]
+    public string FlightId{ get; set; }
+    private Seat seatToCheckIn = new Seat();
+    public NotificationDialog notificationDialog{ get; set; }
+
+    private List<Seat> Seats{get;set;}
+
+    protected override async Task OnInitializedAsync()
+    {
+        Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+    private void OpenAddPassengersToList()
+    {
+        _navigationManager.NavigateTo($"/AddPassengersToSeat/{FlightId}");
+    }
+
+    private async Task CheckInPassenger(int seatId)
+    {
+        seatToCheckIn = await _seatService.GetSeatAsync(int.Parse(FlightId), seatId);
+        if(seatToCheckIn.SeatNumber==null)
+        {
+            _navigationManager.NavigateTo($"/EditSeat/{FlightId}/{seatId}");
+        }
+        else
+        {
+            notificationDialog.Show(); 
+        }
+    }
+    private async Task DeleteSeat(int seatId)
+    {
+        await _seatService.DeleteSeat(seatId);
+        Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+}

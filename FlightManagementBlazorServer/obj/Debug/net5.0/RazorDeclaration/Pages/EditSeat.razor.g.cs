@@ -91,7 +91,7 @@ using DomainModel.Models;
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\_Imports.razor"
-using Services;
+using FlightManagementBlazorServer.Services;
 
 #line default
 #line hidden
@@ -103,8 +103,22 @@ using ValidationModels;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/EditPassenger/{PassengerId}")]
-    public partial class EditPassanger : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 14 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\_Imports.razor"
+using FlightManagementBlazorServer.Pages;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 2 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\EditSeat.razor"
+using System.Text;
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/EditSeat/{FlightId}/{SeatId}")]
+    public partial class EditSeat : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -112,35 +126,38 @@ using ValidationModels;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 30 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\EditPassanger.razor"
+#line 26 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\EditSeat.razor"
        
     [Parameter]
-    public string PassengerId{ get; set; }
+    public string SeatId{ get; set; }
+    [Parameter]
+    public string FlightId{ get; set; }
 
-    public Passenger Passenger{ get; set; }
-    
+    public NotificationDialog notificationDialog{ get; set; }
+    public Seat Seat { get; set; }
+    public List<Seat> Seats{ get; set; }
     protected override async Task OnInitializedAsync()
     {
-        Passenger = await _passengerService.GetPassengerAsync(int.Parse(PassengerId));
+        Seat = await _seatService.GetSeatAsync(int.Parse(FlightId),int.Parse(SeatId));
+        Seats = await _seatService.GetSeats(int.Parse(FlightId));
     }
-
     private void Close()
     {
-        _navigationManager.NavigateTo("/PassengerList");
+        _navigationManager.NavigateTo($"/Seat/{FlightId}");
     }
 
-    private async Task UpdatePassengerAsync()
+    private async Task UpdateSeatAsync()
     {
-        await _passengerService.UpdatePassengerAsync(Passenger);
+
+        await _seatService.UpdateSeat(Seat);
         Close();
     }
-
 
 #line default
 #line hidden
 #nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private PassengerService _passengerService { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private SeatService _seatService { get; set; }
     }
 }
 #pragma warning restore 1591
