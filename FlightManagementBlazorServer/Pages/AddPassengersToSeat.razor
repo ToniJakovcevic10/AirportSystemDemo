@@ -10,41 +10,48 @@
 }
 else
 {
-    <h3>Add Passengers in @FlightId Flight</h3>
-    <a href="/AddPassenger" class="btn-primary justify-content-center">
-        Create new Passengers
-    </a>
+    @if(_appState.Role=="Admin" || _appState.Role=="CheckIn")
+    {
+        <h3>Add Passengers in @FlightId Flight</h3>
+        <a href="/AddPassenger" class="btn btn-primary">
+            Create new Passengers
+        </a>
 
-    <table class="table table-responsive">
-        <thead>
-            <tr>
-                <th> Name</th>
-                <th> Surname</th>
-                <th> Gender</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var passenger in Passengers)
-            {
-                
+        <table class="table table-responsive">
+            <thead>
                 <tr>
-                    <td>@passenger.Name</td>
-                    <td>@passenger.Surname</td>
-                    <td>@passenger.Gender</td>
-                    <td>
-                        <button class="btn btn-outline-primary" @onclick="()=> AddPassengerToFlight(passenger)">
-                            Add
-                        </button>
-                    </td>
+                    <th> Name</th>
+                    <th> Surname</th>
+                    <th> Gender</th>
                 </tr>
-            }
-            <tr>
-                <button type="button" class="btn btn-primary" @onclick="Close">
-                    Close
-                </button>
-            </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach(var passenger in Passengers)
+                {
+                    
+                    <tr>
+                        <td>@passenger.Name</td>
+                        <td>@passenger.Surname</td>
+                        <td>@passenger.Gender</td>
+                        <td>
+                            <button class="btn btn-outline-primary" @onclick="()=> AddPassengerToFlight(passenger)">
+                                Add
+                            </button>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <button type="button" class="btn btn-primary" @onclick="Close">
+                        Close
+                    </button>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>You don't have Access to this page. Please Log in!</p>
+    }
 }
 <ConfirmationDialog @ref="AddPassengerConfirmationDialog" ConfirmationChanged="@OnAddPassengerConfirmationSelected" Question="Add passenger to flight?"></ConfirmationDialog>
 

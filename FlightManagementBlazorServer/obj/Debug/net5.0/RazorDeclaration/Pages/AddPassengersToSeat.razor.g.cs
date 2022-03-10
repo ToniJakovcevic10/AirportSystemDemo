@@ -119,7 +119,7 @@ using FlightManagementBlazorServer.Pages;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 51 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\AddPassengersToSeat.razor"
+#line 58 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\AddPassengersToSeat.razor"
        
     [Parameter]
     public string FlightId { get; set; }

@@ -138,7 +138,6 @@ using FlightManagementBlazorServer.Pages;
     public void LogOut()
     {
         _appState.Role = "costumer";
-        Dispose();
     }
 
 #line default

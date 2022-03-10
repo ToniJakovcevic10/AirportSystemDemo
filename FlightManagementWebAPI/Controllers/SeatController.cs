@@ -58,15 +58,16 @@ namespace FlightManagementWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        [HttpGet("{seatNumber}")]
-        public IActionResult isSeatNumberAvailable(string seatNumber)
+        [HttpGet("{seatNumber}/{FlightId:int}")]
+        public IActionResult isSeatNumberAvailable(string seatNumber, int FlightId)
         {
             try
             {
-                var seat = _seatRepository.isSeatNumberAvailable(seatNumber);
+                var seat = _seatRepository.isSeatNumberAvailable(seatNumber,FlightId);
                 if (seat == null)
-                    return StatusCode(StatusCodes.Status200OK);
-                return StatusCode(StatusCodes.Status302Found);
+                    return Ok(null);
+                else
+                return Ok(seat);
             }
             catch(System.Exception)
             {

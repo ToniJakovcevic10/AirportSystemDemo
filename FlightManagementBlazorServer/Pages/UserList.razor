@@ -1,8 +1,6 @@
 ﻿@page "/UserList"
 @inject AppState _appState;
-@*@using DomainModel.Models
-@using FlightManagementBlazorServer.Pages;
-@using FlightManagementBlazorServer.Services;*@
+@implements IDisposable;
 @inject UserService _userService;
 @inject NavigationManager _navigationManager;
 
@@ -19,37 +17,44 @@
 }
 else
 {
-    <table class="table table-responsive">
-        <thead>
-            <tr>
-                <th>UserName</th>
-                <th>Password</th>
-                <th>Role</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var user in Users)
-            {
+    @if (_appState.Role == "Admin" || _appState.Role == "CheckIn")
+    {
+        <table class="table table-responsive">
+            <thead>
                 <tr>
-                    <td>@user.UserName</td>
-                    <td>@user.Password</td>
-                    <td>@user.RoleId</td>
-                    @if (_appState.Role == "Admin")
-                    {
-                        <td>
-                                <a href="/EditUser/@user.Id" class="btn btn-primary">
-                                <span class="oi oi-pencil"></span>    
-                            </a>
-                            
-                            <button type="button" class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">
-                                <span class="oi oi-delete"></span>
-                            </button>
-                        </td>
-                    }
+                    <th>UserName</th>
+                    <th>Password</th>
+                    <th>Role</th>
                 </tr>
-            }  
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var user in Users)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Password</td>
+                        <td>@user.RoleId</td>
+                        @if (_appState.Role == "Admin")
+                        {
+                            <td>
+                                <a href="/EditUser/@user.Id" class="btn btn-primary">
+                                    <span class="oi oi-pencil"></span>    
+                                </a>
+
+                                <button type="button" class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            </td>
+                        }
+                    </tr>
+                }  
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>You don't have access to user list. Log in to continue.</p>
+    }
 }
 
 <ConfirmationDialog @ref="DeleteConfirmationDialog" ConfirmationChanged="@OnDeleteConfirmationSelected" Question="Delete User?"></ConfirmationDialog>
@@ -62,9 +67,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         Users = await _userService.GetUsers();
+    }
+    protected override void OnInitialized()
+    {
         _appState.OnChange += StateHasChanged;
     }
-
+    public void Dispose()
+    {
+        _appState.OnChange -= StateHasChanged;
+    }
     private async Task DeleteUser(int userId)
     {
         UserIdForDelete = userId;

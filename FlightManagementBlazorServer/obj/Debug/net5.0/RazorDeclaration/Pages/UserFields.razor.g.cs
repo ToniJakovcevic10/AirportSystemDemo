@@ -118,7 +118,7 @@ using FlightManagementBlazorServer.Pages;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 17 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\UserFields.razor"
+#line 18 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\UserFields.razor"
        
     [Parameter]
     public User User { get; set; }

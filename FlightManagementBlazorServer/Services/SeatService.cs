@@ -33,9 +33,16 @@ namespace FlightManagementBlazorServer.Services
                 Encoding.UTF8, "application/json");
             await _httpClient.SendAsync(request);
         }
-        public async Task<Seat> isSeatNumberAvailable(string seatNumber)
+        public async Task<Seat> isSeatNumberAvailable(string seatNumber, int FlightId)
         {
-            return await _httpClient.GetFromJsonAsync<Seat>($"{BaseApiUrl}/{seatNumber}");
+            string checkSeat = await _httpClient.GetStringAsync($"{BaseApiUrl}/{seatNumber}/{FlightId}");
+            if(!string.IsNullOrEmpty(checkSeat))
+            {
+                var seat = await _httpClient.GetFromJsonAsync<Seat>($"{BaseApiUrl}/{seatNumber}/{FlightId}");
+                return seat;
+            }
+            else
+            return null;       
         }
         public async Task UpdateSeat(Seat seat)
         {

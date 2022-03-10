@@ -111,7 +111,7 @@ using FlightManagementBlazorServer.Pages;
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/UserList")]
-    public partial class UserList : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class UserList : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -119,7 +119,7 @@ using FlightManagementBlazorServer.Pages;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 57 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\UserList.razor"
+#line 62 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\UserList.razor"
        
     private List<User> Users;
     public int UserIdForDelete{ get; set; }
@@ -128,9 +128,15 @@ using FlightManagementBlazorServer.Pages;
     protected override async Task OnInitializedAsync()
     {
         Users = await _userService.GetUsers();
+    }
+    protected override void OnInitialized()
+    {
         _appState.OnChange += StateHasChanged;
     }
-
+    public void Dispose()
+    {
+        _appState.OnChange -= StateHasChanged;
+    }
     private async Task DeleteUser(int userId)
     {
         UserIdForDelete = userId;

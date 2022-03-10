@@ -32,12 +32,18 @@ namespace FlightManagementWebAPI.Controllers
         [HttpGet("{userName}")]
         public IActionResult GetUserByUsername(string userName)
         {
-            var user =_userRepository.GetUserByUsername(userName);
-            if(user==null)
+            try
             {
-
+                var user =_userRepository.GetUserByUsername(userName);
+                if (user == null)
+                    return Ok();
+                else 
+                    return Ok(user);
             }
-            return Ok(user);
+           catch(System.Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPost]

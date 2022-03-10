@@ -11,11 +11,14 @@ else
 {
      <h3>Seat List in Flight @FlightId</h3>
 
-     <button type="button" class="btn btn-success" @onclick="OpenAddPassengersToList">
-        <span class="oi oi-plus"></span>
+     @if(_appState.Role=="Admin" || _appState.Role=="CheckIn")
+    {
+        <button type="button" class="btn btn-success" @onclick="OpenAddPassengersToList">
+            <span class="oi oi-plus"></span>
             Add Passengers
-     </button>
-
+         </button>
+    }
+    
      <table class="table table-responsive">
         <thead>
             <tr>
@@ -23,6 +26,7 @@ else
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Gender</th>
+                <th>SeatNumber</th>
             </tr>
         </thead>
        <tbody>
@@ -35,6 +39,7 @@ else
                         <td>@seat.Passenger.Name</td>
                         <td>@seat.Passenger.Surname</td>
                         <td>@seat.Passenger.Gender</td>
+                        <td>@seat.SeatNumber</td>
                         <td>
                             @if(_appState.Role=="Admin")
                             {
@@ -54,6 +59,9 @@ else
             }
         </tbody>
     </table>
+    <button class="btn btn-secondary" @onclick="Close">
+        <span class="oi oi-media-skip-backward"></span>Close
+    </button>
 }
 <NotificationDialog @ref="notificationDialog" Description="Passenger is already checked in!"></NotificationDialog>
 
@@ -68,6 +76,14 @@ else
     protected override async Task OnInitializedAsync()
     {
         Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+    protected override void OnInitialized()
+    {
+        _appState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        _appState.OnChange -= StateHasChanged;
     }
     private void OpenAddPassengersToList()
     {
@@ -90,5 +106,9 @@ else
     {
         await _seatService.DeleteSeat(seatId);
         Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+    private void Close()
+    {
+        _navigationManager.NavigateTo("/");
     }
 }

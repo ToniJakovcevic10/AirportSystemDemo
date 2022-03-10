@@ -17,8 +17,6 @@ namespace FlightManagementWebAPI.Repositories
         public List<Seat> GetSeats(int flightId)
         {
             return _airportSystemContext.Seats.Include(seat => seat.Flight).Include(seat =>seat.Passenger).Where(seat => seat.FlightId == flightId).ToList();
-
-            /*return _airportSystemContext.Flights.Include(flight => flight.Carrier).Where(flight => flight.IsArchived == archived).ToList();*/
         }
 
         public void AddSeat(Seat seat)
@@ -42,9 +40,12 @@ namespace FlightManagementWebAPI.Repositories
                 _airportSystemContext.SaveChanges();
             }
         }
-        public Seat isSeatNumberAvailable(string seatNumber)
+        public Seat isSeatNumberAvailable(string seatNumber, int FlightId)
         {
-            var seat = _airportSystemContext.Seats.FirstOrDefault(seat => seat.SeatNumber.Equals(seatNumber));
+
+            var seat = _airportSystemContext.Seats.FirstOrDefault(seat => seat.SeatNumber.Equals(seatNumber) && seat.FlightId.Equals(FlightId));
+            //var seat = _airportSystemContext.Seats.
+            //return _airportSystemContext.Seats.Include(seat => seat.Flight).Include(seat => seat.Passenger).Where(seat => seat.FlightId == flightId).ToList();
             if (seat == null)
                 return null;
             return seat;

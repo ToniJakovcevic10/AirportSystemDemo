@@ -21,9 +21,18 @@ namespace FlightManagementBlazorServer.Services
             return await _httpClient.GetFromJsonAsync<List<User>>(BaseApiUrl);
         }
 
-        public async Task<User> GetUserByUserName(string userName)
+        public async Task<User> GetUserByUserName(string userName, string password)
         {
-            return await _httpClient.GetFromJsonAsync<User>($"{BaseApiUrl}/{userName}");
+            string checkUsername = await _httpClient.GetStringAsync($"{BaseApiUrl}/{userName}");
+            if(!string.IsNullOrEmpty(checkUsername))
+            {
+                var user = await _httpClient.GetFromJsonAsync<User>($"{BaseApiUrl}/{userName}");
+                if (user.Password == password)
+                    return user;
+                else
+                    return null;
+            }
+            return null;
         }
         public async Task AddUserAsync(User user)
         {

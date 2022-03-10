@@ -2,6 +2,7 @@
 @inject FlightService _flightService;
 @inject NavigationManager _navigationManager;
 @inject AppState _appState;
+@implements IDisposable;
 
 <h3>Flights</h3>
 <button type="button" class="btn btn-success" @onclick="OpenAddFlightPage">
@@ -77,6 +78,14 @@ else
     protected override async Task OnInitializedAsync()
     {
         Flights = await _flightService.GetFlights();
+    }
+    protected override void OnInitialized()
+    {
+        _appState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        _appState.OnChange -= StateHasChanged;
     }
     private void OpenAddFlightPage()
     {

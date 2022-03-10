@@ -111,7 +111,7 @@ using FlightManagementBlazorServer.Pages;
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
-    public partial class FlightList : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class FlightList : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -119,7 +119,7 @@ using FlightManagementBlazorServer.Pages;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 72 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\FlightList.razor"
+#line 73 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\FlightList.razor"
        
     private List<Flight> Flights;
     public ConfirmationDialog DeleteConfirmationDialog{ get; set; }
@@ -128,6 +128,14 @@ using FlightManagementBlazorServer.Pages;
     protected override async Task OnInitializedAsync()
     {
         Flights = await _flightService.GetFlights();
+    }
+    protected override void OnInitialized()
+    {
+        _appState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        _appState.OnChange -= StateHasChanged;
     }
     private void OpenAddFlightPage()
     {

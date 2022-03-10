@@ -131,6 +131,7 @@ using System.Text;
 
     public string username, password;
     private List<User> Users { get; set; }
+    public ConfirmationDialog confirmationDialog{ get; set; }
     public NotificationDialog WrongAuthorizationLogin{ get; set; }
     public List<ValidationError> ValidationErrors{ get; set; }
     public String ConcatenatedValidationErrors{ get; set; }
@@ -142,7 +143,7 @@ using System.Text;
 
     private async void AuthorizeLogin()
     {
-        var user = await _userService.GetUserByUserName(username);
+        var user = await _userService.GetUserByUserName(username,password);
         if(user==null)
         {
             ValidationErrors = Message(false);
@@ -151,21 +152,8 @@ using System.Text;
         }
         else
         {
-            user = await _userService.GetUserByUserName(username);
-            if(user.Password == password)
-            {
-                _appState.Role = user.RoleId;
-                ValidationErrors = Message(true);
-                ConcatenatedValidationErrors = GetConcatenatedValidationErrors(ValidationErrors);
-                WrongAuthorizationLogin.Show();
-                Close();
-            }
-            else
-            {
-                ValidationErrors = Message(false);
-                ConcatenatedValidationErrors = GetConcatenatedValidationErrors(ValidationErrors);
-                WrongAuthorizationLogin.Show();
-            }   
+            _appState.Role = user.RoleId;
+            confirmationDialog.Show();
         }       
     }
 
@@ -197,6 +185,11 @@ using System.Text;
 
         }
         return message.ToString();
+    }
+    private void OnConfirmationSelected(bool isConfirmed)
+    {
+        if (isConfirmed == true)
+            Close();
     }
 
 #line default

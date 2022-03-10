@@ -148,9 +148,16 @@ using System.Text;
 
     private async Task UpdateSeatAsync()
     {
-
-        await _seatService.UpdateSeat(Seat);
-        Close();
+        var isSeatAvailable = await _seatService.isSeatNumberAvailable(Seat.SeatNumber, int.Parse(FlightId));
+        if(isSeatAvailable==null)
+        {
+            await _seatService.UpdateSeat(Seat);
+            Close();
+        }
+        else
+        {
+            notificationDialog.Show();
+        }
     }
 
 #line default

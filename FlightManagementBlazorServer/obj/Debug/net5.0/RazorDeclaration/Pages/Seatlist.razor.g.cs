@@ -119,7 +119,7 @@ using FlightManagementBlazorServer.Pages;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 60 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\Seatlist.razor"
+#line 68 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\Seatlist.razor"
        
     [Parameter]
     public string FlightId{ get; set; }
@@ -131,6 +131,14 @@ using FlightManagementBlazorServer.Pages;
     protected override async Task OnInitializedAsync()
     {
         Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+    protected override void OnInitialized()
+    {
+        _appState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        _appState.OnChange -= StateHasChanged;
     }
     private void OpenAddPassengersToList()
     {
@@ -153,6 +161,10 @@ using FlightManagementBlazorServer.Pages;
     {
         await _seatService.DeleteSeat(seatId);
         Seats = await _seatService.GetSeats(int.Parse(FlightId));
+    }
+    private void Close()
+    {
+        _navigationManager.NavigateTo("/");
     }
 
 #line default
