@@ -1,7 +1,6 @@
 ﻿@page "/Seat/{FlightId}"
-@inject SeatService _seatService;
-@inject AppState _appState;
-@inject NavigationManager _navigationManager;
+@inherits SeatlistBase;
+
 
 @if(Seats==null)
 {
@@ -65,50 +64,3 @@ else
 }
 <NotificationDialog @ref="notificationDialog" Description="Passenger is already checked in!"></NotificationDialog>
 
-@code {
-    [Parameter]
-    public string FlightId{ get; set; }
-    private Seat seatToCheckIn = new Seat();
-    public NotificationDialog notificationDialog{ get; set; }
-
-    private List<Seat> Seats{get;set;}
-
-    protected override async Task OnInitializedAsync()
-    {
-        Seats = await _seatService.GetSeats(int.Parse(FlightId));
-    }
-    protected override void OnInitialized()
-    {
-        _appState.OnChange += StateHasChanged;
-    }
-    public void Dispose()
-    {
-        _appState.OnChange -= StateHasChanged;
-    }
-    private void OpenAddPassengersToList()
-    {
-        _navigationManager.NavigateTo($"/AddPassengersToSeat/{FlightId}");
-    }
-
-    private async Task CheckInPassenger(int seatId)
-    {
-        seatToCheckIn = await _seatService.GetSeatAsync(int.Parse(FlightId), seatId);
-        if(seatToCheckIn.SeatNumber==null)
-        {
-            _navigationManager.NavigateTo($"/EditSeat/{FlightId}/{seatId}");
-        }
-        else
-        {
-            notificationDialog.Show(); 
-        }
-    }
-    private async Task DeleteSeat(int seatId)
-    {
-        await _seatService.DeleteSeat(seatId);
-        Seats = await _seatService.GetSeats(int.Parse(FlightId));
-    }
-    private void Close()
-    {
-        _navigationManager.NavigateTo("/");
-    }
-}

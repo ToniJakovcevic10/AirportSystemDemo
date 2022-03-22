@@ -4,11 +4,13 @@
 @inject AppState _appState;
 
 <h3>PassengerList</h3>
-<button type="button" class="btn btn-success" @onclick="OpenAddPassenger">
-    <span class="oi oi-plus"></span>
-    Add Passenger
-</button>
-
+@if (_appState.Role == "Admin" || _appState.Role == "CheckIn")
+{
+    <button type="button" class="btn btn-success" @onclick="OpenAddPassenger">
+        <span class="oi oi-plus"></span>
+        Add Passenger
+    </button>
+}
 @if(Passengers==null)
 {
     <p>Loading ...</p>

@@ -118,86 +118,13 @@ using System.Text;
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/LoginPage")]
-    public partial class LoginPage : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class LoginPage : LoginPageBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 39 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\LoginPage.razor"
-       
-
-    public string username, password;
-    private List<User> Users { get; set; }
-    public ConfirmationDialog confirmationDialog{ get; set; }
-    public NotificationDialog WrongAuthorizationLogin{ get; set; }
-    public List<ValidationError> ValidationErrors{ get; set; }
-    public String ConcatenatedValidationErrors{ get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        Users = await _userService.GetUsers();
-    }
-
-    private async void AuthorizeLogin()
-    {
-        var user = await _userService.GetUserByUserName(username,password);
-        if(user==null)
-        {
-            ValidationErrors = Message(false);
-            ConcatenatedValidationErrors = GetConcatenatedValidationErrors(ValidationErrors);
-            WrongAuthorizationLogin.Show();
-        }
-        else
-        {
-            _appState.Role = user.RoleId;
-            confirmationDialog.Show();
-        }       
-    }
-
-    private void Close()
-    {
-        _navigationManager.NavigateTo("/");
-    }
-    private List<ValidationError> Message(bool successful)
-    {
-        var validationErrors = new List<ValidationError>();
-
-        if (successful == true)
-            validationErrors.Add(new ValidationError { Description = "Successful login!" });
-        else
-            validationErrors.Add(new ValidationError { Description = "Wrong Authorization!" });
-
-        return validationErrors;
-    }
-
-    private string GetConcatenatedValidationErrors(List<ValidationError> ValidationErrors)
-    {
-        StringBuilder message = new StringBuilder();
-        foreach(var error in ValidationErrors)
-        {
-            if (message.Length == 0)
-                message.Append(error.Description);
-            else
-                message.Append($"{Environment.NewLine} {error.Description}");
-
-        }
-        return message.ToString();
-    }
-    private void OnConfirmationSelected(bool isConfirmed)
-    {
-        if (isConfirmed == true)
-            Close();
-    }
-
-#line default
-#line hidden
-#nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private AppState _appState { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private UserService _userService { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -111,72 +111,13 @@ using FlightManagementBlazorServer.Pages;
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
-    public partial class FlightList : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
+    public partial class FlightList : FlightListBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 73 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\FlightList.razor"
-       
-    private List<Flight> Flights;
-    public ConfirmationDialog DeleteConfirmationDialog{ get; set; }
-    public ConfirmationDialog ArchiveConfirmationDialog{ get; set; }
-    public int SelectedFlightId{ get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        Flights = await _flightService.GetFlights();
-    }
-    protected override void OnInitialized()
-    {
-        _appState.OnChange += StateHasChanged;
-    }
-    public void Dispose()
-    {
-        _appState.OnChange -= StateHasChanged;
-    }
-    private void OpenAddFlightPage()
-    {
-        _navigationManager.NavigateTo("/AddFlight");
-    }
-
-    private async Task DeleteFlight(int flightId)
-    {
-        SelectedFlightId = flightId;
-        DeleteConfirmationDialog.Show();
-    }
-
-    private async Task OnDeleteConfirmationSelected(bool isDeleteConfirmed)
-    {
-        if(isDeleteConfirmed)
-        {
-            await _flightService.DeleteFlight(SelectedFlightId);
-            Flights = await _flightService.GetFlights();
-        }
-    }
-
-    private async Task OnArchiveConfirmationSelected(bool isArchiveConfirmed)
-    {
-        if(isArchiveConfirmed)
-        {
-            await _flightService.ArchiveFlight(SelectedFlightId);
-            Flights = await _flightService.GetFlights();
-        }
-    }
-    private async Task ArchiveFlight(int flightId)
-    {
-        SelectedFlightId = flightId;
-        ArchiveConfirmationDialog.Show();
-    }
-
-#line default
-#line hidden
-#nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private AppState _appState { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private FlightService _flightService { get; set; }
     }
 }
 #pragma warning restore 1591

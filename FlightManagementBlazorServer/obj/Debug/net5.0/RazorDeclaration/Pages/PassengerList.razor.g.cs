@@ -119,7 +119,7 @@ using FlightManagementBlazorServer.Pages;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 53 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\PassengerList.razor"
+#line 55 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\PassengerList.razor"
        
     private List<Passenger> Passengers{get;set;}
     public ConfirmationDialog DeleteConfirmationDialog{ get; set; }

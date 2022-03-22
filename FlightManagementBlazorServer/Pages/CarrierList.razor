@@ -3,10 +3,13 @@
 @inject AppState _appState;
 
 <h3>Carrier List</h3>
-<button type="button" class="btn btn-success" @onclick="ShowAddCarrierPage">
-    <span class="oi oi-plus"></span>
-    Add Carrier
-</button>
+@if (_appState.Role == "Admin" || _appState.Role == "CheckIn")
+{
+    <button type="button" class="btn btn-success" @onclick="ShowAddCarrierPage">
+        <span class="oi oi-plus"></span>
+        Add Carrier
+    </button>
+}
 @if(Carriers == null)
 {
     <p>Loading...</p>

@@ -42,8 +42,8 @@
         @if(_appState.Role =="Admin" || _appState.Role=="CheckIn")
         {
             <li class="nav-item px-3">
-                <NavLink class="nav-link" href="">
-                    <span class="oi oi-account-login" aria-hidden="true" @onclick="LogOut"></span>Log Out
+                <NavLink class="nav-link" href=""  @onclick="LogOut">
+                    <span class="oi oi-account-login" aria-hidden="true"></span>Log Out
                 </NavLink>
             </li>
         }

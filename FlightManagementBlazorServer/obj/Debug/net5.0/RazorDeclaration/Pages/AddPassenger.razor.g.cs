@@ -118,81 +118,13 @@ using System.Text;
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/AddPassenger")]
-    public partial class AddPassenger : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class AddPassenger : AddPassengerBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 24 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\AddPassenger.razor"
-       
-    public Passenger Passenger { get; set; }
-    public NotificationDialog NotificationDialog{ get; set; }
-    public List<ValidationError> ValidationErrors{ get; set; }
-    public String ConcatenatedValidationErrors{ get; set; }
-    protected override async Task OnInitializedAsync()
-    {
-        Passenger = new Passenger();
-    }
-    private async Task AddPassengerAsync()
-    {
-        ValidationErrors = ValidatePassenger();
-        if(ValidationErrors.Any())
-        {
-            ConcatenatedValidationErrors = GetConcatenatedValidationErrors(ValidationErrors);
-            NotificationDialog.Show();
-        }
-        else
-        {
-            await _passengerService.AddPassenger(Passenger);
-            Close(); 
-        }
-        
-    }
-
-    private void Close()
-    {
-        _navigationManager.NavigateTo("/PassengerList");
-    }  
-
-    private List<ValidationError> ValidatePassenger()
-    {
-        var validationErrors = new List<ValidationError>();
-        
-        if (String.IsNullOrWhiteSpace(Passenger.Name))
-            validationErrors.Add(new ValidationError { Description = "Please insert Passenger Name!" });
-
-        if (String.IsNullOrWhiteSpace(Passenger.Surname))
-            validationErrors.Add(new ValidationError { Description = "Please insert Passenger Surname!" });
-       
-        if (Passenger.Gender == null)
-            validationErrors.Add(new ValidationError { Description = "Please select Gender!" });
-
-        
-        return validationErrors;
-    }
-
-    private string GetConcatenatedValidationErrors(List<ValidationError> ValidationErrors)
-    {
-        StringBuilder message = new StringBuilder();
-        foreach(var error in ValidationErrors)
-        {
-            if (message.Length == 0)
-                message.Append(error.Description);
-            else
-                message.Append($"{Environment.NewLine} {error.Description}");
-
-        }
-        return message.ToString();
-    }
-
-#line default
-#line hidden
-#nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private PassengerService _passengerService { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -118,80 +118,13 @@ using System.Text;
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/AddUser")]
-    public partial class AddUser : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class AddUser : AddUserBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 22 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\AddUser.razor"
-       
-    public User User { get; set; }
-    public NotificationDialog NotificationDialog{ get; set; }
-    public List<ValidationError> ValidationErrors{ get; set; }
-    public String ConcatenatedValidationErrors{ get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        User = new User();
-    }
-
-    private async Task AddUserAsync()
-    {
-        ValidationErrors = ValidateUser();
-        if(ValidationErrors.Any())
-        {
-            ConcatenatedValidationErrors = GetConcatenatedValidationErrors(ValidationErrors);
-            NotificationDialog.Show();
-        }
-        else
-        {
-            await _userService.AddUserAsync(User);
-            Close();
-        }
-    }
-
-    private void Close()
-    {
-        _navigationManager.NavigateTo("/UserList");
-    }
-
-    private List<ValidationError> ValidateUser()
-    {
-        var validationErrors = new List<ValidationError>();
-        if (String.IsNullOrWhiteSpace(User.UserName))
-            validationErrors.Add(new ValidationError { Description = "Please insert username!" });
-
-        if (String.IsNullOrWhiteSpace(User.Password))
-            validationErrors.Add(new ValidationError { Description = "Please insert Password!" });
-
-        if (String.IsNullOrWhiteSpace(User.RoleId))
-            validationErrors.Add(new ValidationError { Description = "Please insert Role!" });
-
-        return validationErrors;
-
-    }
-    private string GetConcatenatedValidationErrors(List<ValidationError> ValidationErrors)
-    {
-        StringBuilder message = new StringBuilder();
-        foreach(var error in ValidationErrors)
-        {
-            if (message.Length == 0)
-                message.Append(error.Description);
-            else
-                message.Append($"{Environment.NewLine} {error.Description}");
-
-        }
-        return message.ToString();
-    }
-
-#line default
-#line hidden
-#nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private UserService _userService { get; set; }
     }
 }
 #pragma warning restore 1591

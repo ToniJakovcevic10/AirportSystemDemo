@@ -5,23 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\CheckInPassenger.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\CheckInPassenger.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\CheckInPassenger.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Pages\CheckInPassenger.razor" />
   </ItemGroup>
 
 </Project>

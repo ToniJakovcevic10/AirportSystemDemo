@@ -111,68 +111,13 @@ using FlightManagementBlazorServer.Pages;
 #line hidden
 #nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Seat/{FlightId}")]
-    public partial class Seatlist : Microsoft.AspNetCore.Components.ComponentBase
+    public partial class Seatlist : SeatlistBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
         {
         }
         #pragma warning restore 1998
-#nullable restore
-#line 68 "C:\Users\Toni\Desktop\FESB\EDIT_junDev\ZavrsniProjekt\AirportSystem-main\FlightManagementBlazorServer\Pages\Seatlist.razor"
-       
-    [Parameter]
-    public string FlightId{ get; set; }
-    private Seat seatToCheckIn = new Seat();
-    public NotificationDialog notificationDialog{ get; set; }
-
-    private List<Seat> Seats{get;set;}
-
-    protected override async Task OnInitializedAsync()
-    {
-        Seats = await _seatService.GetSeats(int.Parse(FlightId));
-    }
-    protected override void OnInitialized()
-    {
-        _appState.OnChange += StateHasChanged;
-    }
-    public void Dispose()
-    {
-        _appState.OnChange -= StateHasChanged;
-    }
-    private void OpenAddPassengersToList()
-    {
-        _navigationManager.NavigateTo($"/AddPassengersToSeat/{FlightId}");
-    }
-
-    private async Task CheckInPassenger(int seatId)
-    {
-        seatToCheckIn = await _seatService.GetSeatAsync(int.Parse(FlightId), seatId);
-        if(seatToCheckIn.SeatNumber==null)
-        {
-            _navigationManager.NavigateTo($"/EditSeat/{FlightId}/{seatId}");
-        }
-        else
-        {
-            notificationDialog.Show(); 
-        }
-    }
-    private async Task DeleteSeat(int seatId)
-    {
-        await _seatService.DeleteSeat(seatId);
-        Seats = await _seatService.GetSeats(int.Parse(FlightId));
-    }
-    private void Close()
-    {
-        _navigationManager.NavigateTo("/");
-    }
-
-#line default
-#line hidden
-#nullable disable
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager _navigationManager { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private AppState _appState { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private SeatService _seatService { get; set; }
     }
 }
 #pragma warning restore 1591
